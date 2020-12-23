@@ -1,7 +1,7 @@
 # Digipolis Swagger library
 
 Digipolis Antwerp uses the [Swagger](https://swagger.io) library for API documentation.  
-Our library adds a Swagger startup extension that, by default, adds custom Digipolis filters & operators that follow the [Digipolis API guidelines](https://acpaas-api.digipolis.be#/).
+Our library adds a Swagger startup extension that, by default, adds custom Digipolis operator filters that follow the [Digipolis API guidelines](https://acpaas-api.digipolis.be#/).
 
 ## Table of Contents
 
@@ -61,7 +61,7 @@ services.AddDigipolisSwagger(options =>
     });
 ```
 
-This method adds basic filters and operators that abide the rules set by the [Digipolis API guidelines](https://acpaas-api.digipolis.be#/).
+This method adds basic operator filters that abide the rules set by the [Digipolis API guidelines](https://acpaas-api.digipolis.be#/).
 Make sure to fill in the SwaggerDoc option as this one is not automatically set.
 
 ## Custom options
