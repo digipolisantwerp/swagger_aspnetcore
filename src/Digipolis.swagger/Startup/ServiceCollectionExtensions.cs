@@ -59,7 +59,7 @@ namespace Digipolis.swagger.Startup
         private static void AddDefaultSchemaGeneratorOptions(SwaggerOptions options)
         {
             if (options.DefaultSchemaIdSelector
-                && options.SchemaGeneratorOptions.SchemaIdSelector == null)
+                && options.SchemaGeneratorOptions.SchemaIdSelector.Method.Name == "DefaultSchemaIdSelector")
             {
                 options.CustomSchemaIds(type => SchemaIdGenerator.SchemaIdSelector(type));
             }

@@ -1,7 +1,7 @@
-# Serilog extensions library
+# Digipolis Swagger library
 
-Digipolis Antwerp uses the Elastic stack for logging. Instead of writing our own framework for this logging engine, we use the excellent [Serilog](https://serilog.net/) library.  
-Our library adds extensions to the Serilog framework, specific to the way we use the Elastic stack.
+Digipolis Antwerp uses the [Swagger](https://swagger.io) library for API documentation.  
+Our library adds a Swagger startup extension that, by default, adds custom Digipolis filters & operators that follow the [Digipolis API guidelines](https://acpaas-api.digipolis.be#/).
 
 ## Table of Contents
 
@@ -12,17 +12,15 @@ Our library adds extensions to the Serilog framework, specific to the way we use
 - [Target framework](#target-framework)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Extending](#extending)
-- [Breaking changes in version 2](#breaking-changes-in-version-2)
-- [Enrichment extension packages](#enrichment-extension-packages)
+- [Custom options](#custom-options)
+- [Contributing](#contributing)
+- [Support](#support)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Target framework
 
-This package targets **.NET Standard 2.0**.
-
-For .NET Standard 1.6, use version 3.x. The source code is available in [this legacy branch](https://github.com/digipolisantwerp/serilog_aspnetcore/tree/legacy-3.x).
+This package targets **.NET Standard 2.1**.
 
 ## Installation
 
@@ -30,196 +28,68 @@ To add the library to a project, you add the package to the csproj file :
 
 ```xml
   <ItemGroup>
-    <PackageReference Include="Digipolis.Serilog" Version="4.0.0" />
+    <PackageReference Include="Digipolis.swagger" Version="1.0.0" />
   </ItemGroup>
-``` 
+```
 
 In Visual Studio you can also use the NuGet Package Manager to do this.
 
 ## Usage
 
-This library serves as the base library for the more concrete Serilog extension libraries in the Digipolis framework. It contains the extension method to register the 
-Digipolis Serilog extensions, to be called in the **ConfigureServices** method of the **Startup** class.
+This library serves as the Digipolis Swagger extensions library. It contains the service collection extension method to register the 
+Digipolis Swagger options, to be called in the **ConfigureServices** method of the **Startup** class.
 
 ```csharp  
-services.AddSerilogExtensions(options => {
-    // call the specific extension here
-});
-```  
-
-## Extending
-
-To extend the logging framework, you create a concrete package that contains the extensions e.g. a new LogEvent enricher.  
-To register the extensions, you also add an **extension method** to the **SerilogExtensionsOptions** class, like so :
-
-```csharp  
-public static SerilogExtensionsOptions AddApplicationServicesEnricher(this SerilogExtensionsOptions options)
-{
-    options.ApplicationServices.AddSingleton<ILogEventEnricher, ApplicationServicesEnricher>();
-    return options;
-}
-```  
-
-In an application, your extension is registered in the **ConfigureServices** method of the **Startup** class :  
-
-```csharp  
-services.AddSerilogExtensions(options => {
-    options.AddApplicationServicesEnricher();
-});
-```  
-
-This way, your enrichers can have other services injected into them at runtime by the .NET Core injection framework.
-
-Registered enrichers are added to the Serilog pipeline in the **Configure** method of the **Startup** class when configuring the Serilog logging framework : 
-
-```csharp  
-var enrichers = app.ApplicationServices.GetServices<ILogEventEnricher>().ToArray();
-
-Log.Logger = new LoggerConfiguration()
-                .Enrich.With(enrichers)
-                .WriteTo.LiterateConsole()
-                .CreateLogger();
-
-loggerFactory.AddSerilog(dispose: true);
-```  
-
-## Breaking changes in version 2
-
-If you upgrade from version 1.x to version 2.x there are some changes you have to make in your project.
-
-Some of the extensions that this package added to the Serilog Elastic Sink are now part of the official Serilog package(s) and were thus removed from this library. The consequence is that you don't get the implicit reference to the Serilog packages anymore when you add this package to your project.  **You have to add the Serilog packages to your own csproj project file** :
-
-```xml
-  <ItemGroup>
-    <PackageReference Include="Digipolis.Serilog" Version="4.0.0" />
-    <PackageReference Include="Digipolis.Serilog.ApplicationServices" Version="3.0.0" />
-    <PackageReference Include="Digipolis.Serilog.AuthService" Version="3.0.0" />
-    <PackageReference Include="Digipolis.Serilog.Correlation" Version="3.0.0" />
-    <PackageReference Include="Digipolis.Serilog.Message" Version="1.0.0" />
-    <PackageReference Include="Serilog.Settings.Configuration" Version="3.0.0" />
-    <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="5.0.0" />
-  </ItemGroup>
-``` 
-
-If you were using the IApplicationLogger in your project, you will now have to provide one yourself, since it has been removed from this version of the Digipolis.Serilog package (it has been moved to our [ASP.NET Core API project generator](https://github.com/digipolisantwerp/generator-dgp-api-aspnetcore_yeoman)).
-
-Here's the one that was included in the previous version : 
-
-```csharp
-public interface IApplicationLogger : ILogger<ApplicationLogger>
-{ }
-
-public class ApplicationLogger : IApplicationLogger
-{
-    public ApplicationLogger(ILogger<ApplicationLogger> logger)
+services.AddDigipolisSwagger(options =>
     {
-        _logger = logger;
-    }
+        options.SwaggerDoc("v1", new OpenApiInfo
+        {
+            Title = "Your API title",
+            Description = "Your API description",
+            Version = "v1",
+            Contact = new OpenApiContact
+            {
+                Email = "your.email@digipolis.be",
+                Name = "Your name"
+            },
+            License = new OpenApiLicense
+            {
+                Name = "None",
+                Url = null,
+            },
+        });
+    });
+```
 
-    private readonly ILogger<ApplicationLogger> _logger;
+This method adds basic filters and operators that abide the rules set by the [Digipolis API guidelines](https://acpaas-api.digipolis.be#/).
+Make sure to fill in the SwaggerDoc option as this one is not automatically set.
 
-    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
-    {
-        _logger.Log(logLevel, eventId, state, exception, formatter);
-    }
-
-    public bool IsEnabled(LogLevel logLevel)
-    {
-        return _logger.IsEnabled(logLevel);
-    }
-
-    public IDisposable BeginScope<TState>(TState state)
-    {
-        return _logger.BeginScope(state);
-    }
-}
-```  
-
-Don't forget to register it in the .NET Core DI container if you want to inject it in your classes : 
-
-```csharp 
-services.AddSingleton<IApplicationLogger, ApplicationLogger>();
-```  
-
-In the Digipolis architecture, 2 types of events are used while logging : system-logevents and application-logevents.  
-System-logevents are meant for system administrators and developers that want to diagnose problems with the application. They can contain stacktraces and other internal information. They will not be visible for normal users of the application.  
-Application-logevents are used for functional logging like for example completed steps in a business flow. In most applications, these log-events will also be shown to a user of the application so can not contain technical details.  
-
-Together with the following example configuration, a developer can easily use ILogger<T> to send system-logevents and IApplicationLogger to send application-logevents to Elasticsearch.
-
-**loggingconfig.json** :
-
-```json
-{
-  "SystemLog": {
-    "WriteTo": [
-    {
-      "Name": "Elasticsearch",
-      "Args": {
-        "nodeUris": "http://localhost:9200",
-        "indexFormat": "logstash-myapp-{0:yyyy.MM.dd}",
-        "templateName": "myapp-template",
-        "typeName": "SystemLogEvent",
-        "restrictedToMinimumLevel": "Debug"
-        }
-      }],
-      "Enrich": [ "FromLogContext" ]
-	},
-    "ApplicationLog": {
-      "WriteTo": [
-      {
-        "Name": "Elasticsearch",
-        "Args": {
-          "nodeUris": "http://localhost:9200",
-          "indexFormat": "logstash-myapp-{0:yyyy.MM.dd}",
-          "templateName": "myapp-template",
-          "typeName": "AppLogEvent",
-          "restrictedToMinimumLevel": "Information"
-        }
-      }],
-      "Enrich": [ "FromLogContext" ]
-  }
-}
-```  
-
-**Startup.Configure** :
+## Custom options
+This library extends the original SwaggerGenOptions with additional default properties. If you wish to prevent certain default options to be added simply set these options to false, or if you do want them to be added simple set them to true (if they are not yet true by default).
 
 ```csharp  
-var enrichers = app.ApplicationServices.GetServices<ILogEventEnricher>().ToArray();
+services.AddDigipolisSwagger(options =>
+    {
+        options.DefaultAddAuthorizationHeaderRequired = false;
+    });
+```
 
-var systemLogSection = Configuration.GetSection("SystemLog");
-var applicationLogSection = Configuration.GetSection("ApplicationLog");
+Here is a complete overview of the additional options to be set:
 
-var appLogger = typeof(ApplicationLogger).FullName;
+| Option                                | Description                                                  | Default |
+| ------------------------------------- | ------------------------------------------------------------ | ------- |
+| DefaultComments                       | When set to true the xml documents will be added.            | true    |
+| DefaultSecurityDefinition             | When set to true and when the SwaggerGeneratorOptions.SecuritySchemes have no elements with key 'Bearer' then the default JWT authoriztion header security scheme is added. | true    |
+| DefaultSchemaIdSelector               | When set to true the SchemaGeneratorOptions.SchemaIdSelector will be set to the SchemaIdSelector when this option is left null. | true    |
+| DefaultAddAuthorizationHeaderRequired | When set to true the AddAuthorizationHeaderRequired class will be added to the OperationFilterDescriptors list by default if not yet included. | true    |
+| DefaultRemoveSyncRootParameter        | When set to true the RemoveSyncRootParameter class will be added to the OperationFilterDescriptors list by default if not yet included. | true    |
+| DefaultLowerCaseQueryParameterFilter  | When set to true the LowerCaseQueryParameterFilter class will be added to the OperationFilterDescriptors list by default if not yet included. | true    |
+| DefaultCamelCaseBodyParameterFilter   | When set to true the CamelCaseBodyParameterFilter class will be added to the OperationFilterDescriptors list by default if not yet included. | true    |
+| DefaultAddDefaultValues               | When set to true the AddDefaultValues class will be added to the OperationFilterDescriptors list by default if not yet included. | true    |
+| DefaultRemoveVersionFromRoute         | When set to true the RemoveVersionFromRoute class will be added to the OperationFilterDescriptors list by default if not yet included. | true    |
+| DefaultAddPagingParameterDescriptions | When set to true the AddPagingParameterDescriptions class will be added to the OperationFilterDescriptors list by default if not yet included. | true    |
+| DefaultSetDescription                 | When set to true the SetDescription class will be added to the OperationFilterDescriptors list by default if not yet included. | true    |
 
-Log.Logger = new LoggerConfiguration()
-                .Enrich.With(enrichers)
-                .WriteTo.Logger(l => l.ReadFrom.ConfigurationSection(systemLogSection).Filter.ByExcluding(Matching.FromSource(appLogger)))
-                .WriteTo.Logger(l => l.ReadFrom.ConfigurationSection(applicationLogSection).Filter.ByIncludingOnly(Matching.FromSource(appLogger)))
-                .CreateLogger();
-
-loggerFactory.AddSerilog(dispose: true);
-
-appLifetime.ApplicationStopped.Register(Log.CloseAndFlush);
-```  
-
-You can find a more detailed example in our ASP.NET Core API project generator : https://github.com/digipolisantwerp/generator-dgp-api-aspnetcore_yeoman.
-
-The **MessageEnricher** has been moved to its own package. If you want to use it, you will have to add the package to your csproj file (example is higher up in this chapter).  
-Consequently the MessageVersion option has been moved and is now configured with the following code : 
-
-```csharp  
-services.AddSerilogExtensions(options => {
-                options.AddMessagEnricher(msgOptions => msgOptions.MessageVersion = "1");
-            });
-```  
-
-## Enrichment extension packages
-
-[Digipolis.Serilog.ApplicationServices](https://github.com/digipolisantwerp/serilog-applicationservices_aspnetcore)  
-[Digipolis.Serilog.AuthService](https://github.com/digipolisantwerp/serilog-authservice_aspnetcore)  
-[Digipolis.Serilog.Correlation](https://github.com/digipolisantwerp/serilog-correlation_aspnetcore)  
-[Digipolis.Serilog.Message](https://github.com/digipolisantwerp/serilog-message_aspnetcore)  
 
 ## Contributing
 
@@ -231,4 +101,4 @@ Pull requests are always welcome, however keep the following things in mind:
 
 ## Support
 
-Peter Brion (<peter.brion@digipolis.be>)
+Paul Hieltjes (<paul@digipolis.be>)

@@ -51,6 +51,11 @@ namespace Digipolis.swagger.test
                 f => f.Type == typeof(AddPagingParameterDescriptions));
             Assert.Contains(swaggerGenOptions.OperationFilterDescriptors,
                 f => f.Type == typeof(SetDescription));
+            
+            Assert.Contains(swaggerGenOptions.SwaggerGeneratorOptions.SecuritySchemes, 
+                s => s.Key == "Bearer");
+
+            Assert.NotEqual("DefaultSchemaIdSelector", swaggerGenOptions.SchemaGeneratorOptions.SchemaIdSelector.Method.Name);
         }
         
         [Fact]
@@ -107,6 +112,8 @@ namespace Digipolis.swagger.test
                 options.DefaultRemoveVersionFromRoute = false;
                 options.DefaultAddPagingParameterDescriptions = false;
                 options.DefaultSetDescription = false;
+                options.DefaultSecurityDefinition = false;
+                options.DefaultSchemaIdSelector = false;
             });
 
             
@@ -123,6 +130,11 @@ namespace Digipolis.swagger.test
             configOptions.Configure(swaggerGenOptions);
 
             Assert.Empty(swaggerGenOptions.OperationFilterDescriptors);
+            
+            Assert.Empty(swaggerGenOptions.SwaggerGeneratorOptions.SecuritySchemes);
+            
+            Assert.Equal("DefaultSchemaIdSelector", swaggerGenOptions.SchemaGeneratorOptions.SchemaIdSelector.Method.Name);
+
         }
     }
 }
