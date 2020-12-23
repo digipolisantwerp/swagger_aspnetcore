@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0869A6B7-8248-9102-BC06-E9F7DC3D142B}"
+	ProjectSection(SolutionItems) = preProject
+		CHANGELOG.md = CHANGELOG.md
+		nuget.config = nuget.config
+		README.md = README.md
+	EndProjectSection
+	ProjectSection(FolderGlobals) = preProject
+		global_1json__JSONSchema = http://json.schemastore.org/global
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Digipolis.swagger", "src\Digipolis.swagger\Digipolis.swagger.csproj", "{9CAE6CFE-D4DA-462C-B4E5-F9FC2516A6AB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{077A8D89-1287-8313-B035-36740EA93C0E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{ABE3AC27-B426-4EBA-BEE5-5F9E0C04CAF3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Digipolis.swagger.tests", "test\Digipolis.swagger.tests\Digipolis.swagger.tests.csproj", "{BB8C29AB-4C4B-4D67-99BE-C951651DD8EB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9CAE6CFE-D4DA-462C-B4E5-F9FC2516A6AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CAE6CFE-D4DA-462C-B4E5-F9FC2516A6AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CAE6CFE-D4DA-462C-B4E5-F9FC2516A6AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CAE6CFE-D4DA-462C-B4E5-F9FC2516A6AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB8C29AB-4C4B-4D67-99BE-C951651DD8EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB8C29AB-4C4B-4D67-99BE-C951651DD8EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB8C29AB-4C4B-4D67-99BE-C951651DD8EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB8C29AB-4C4B-4D67-99BE-C951651DD8EB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9CAE6CFE-D4DA-462C-B4E5-F9FC2516A6AB} = {077A8D89-1287-8313-B035-36740EA93C0E}
+		{BB8C29AB-4C4B-4D67-99BE-C951651DD8EB} = {ABE3AC27-B426-4EBA-BEE5-5F9E0C04CAF3}
+	EndGlobalSection
+EndGlobal
