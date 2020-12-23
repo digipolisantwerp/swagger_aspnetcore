@@ -64,6 +64,12 @@ services.AddDigipolisSwagger(options =>
 This method adds basic operator filters that abide the rules set by the [Digipolis API guidelines](https://acpaas-api.digipolis.be#/).
 Make sure to fill in the SwaggerDoc option as this one is not automatically set.
 
+In the **Configure** method of the **Startup** class you should also add the UseSwagger and UseSwaggerUI middlewares. Like this for example:
+```csharp  
+app.UseSwagger(c => c.SerializeAsV2 = true);
+app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Your API v1"));
+```
+
 ## Custom options
 This library extends the original SwaggerGenOptions with additional default properties. If you wish to prevent certain default options to be added simply set these options to false, or if you do want them to be added simple set them to true (if they are not yet true by default).
 
