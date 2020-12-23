@@ -101,4 +101,4 @@ Pull requests are always welcome, however keep the following things in mind:
 
 ## Support
 
-Paul Hieltjes (<paul@digipolis.be>)
+Paul Hieltjes (<paul.hieltjes@digipolis.be>)
