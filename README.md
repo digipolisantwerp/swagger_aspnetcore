@@ -80,7 +80,7 @@ Here is a complete overview of the additional options to be set:
 | ------------------------------------- | ------------------------------------------------------------ | ------- |
 | DefaultComments                       | When set to true the xml documents will be added.            | true    |
 | DefaultSecurityDefinition             | When set to true and when the SwaggerGeneratorOptions.SecuritySchemes have no elements with key 'Bearer' then the default JWT authoriztion header security scheme is added. | true    |
-| DefaultSchemaIdSelector               | When set to true the SchemaGeneratorOptions.SchemaIdSelector will be set to the SchemaIdSelector when this option is left null. | true    |
+| DefaultSchemaIdSelector               | When set to true the SchemaGeneratorOptions.SchemaIdSelector will be set to the SchemaIdSelector when this option is not set with a different schemaId Selector function | true    |
 | DefaultAddAuthorizationHeaderRequired | When set to true the AddAuthorizationHeaderRequired class will be added to the OperationFilterDescriptors list by default if not yet included. | true    |
 | DefaultRemoveSyncRootParameter        | When set to true the RemoveSyncRootParameter class will be added to the OperationFilterDescriptors list by default if not yet included. | true    |
 | DefaultLowerCaseQueryParameterFilter  | When set to true the LowerCaseQueryParameterFilter class will be added to the OperationFilterDescriptors list by default if not yet included. | true    |
@@ -89,6 +89,7 @@ Here is a complete overview of the additional options to be set:
 | DefaultRemoveVersionFromRoute         | When set to true the RemoveVersionFromRoute class will be added to the OperationFilterDescriptors list by default if not yet included. | true    |
 | DefaultAddPagingParameterDescriptions | When set to true the AddPagingParameterDescriptions class will be added to the OperationFilterDescriptors list by default if not yet included. | true    |
 | DefaultSetDescription                 | When set to true the SetDescription class will be added to the OperationFilterDescriptors list by default if not yet included. | true    |
+| DefaultAddCorrelationHeaderRequired   | When set to true the AddCorrelationHeaderRequired class will be added to the OperationFilterDescriptors list by default if not yet included | true    |
 
 
 ## Contributing

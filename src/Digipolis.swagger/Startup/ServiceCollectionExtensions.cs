@@ -108,6 +108,12 @@ namespace Digipolis.swagger.Startup
             {
                 options.OperationFilter<AddPagingParameterDescriptions>();
             }
+            
+            if (options.DefaultAddCorrelationHeaderRequired
+                && options.OperationFilterDescriptors.All(o => o.Type != typeof(AddCorrelationHeaderRequired)))
+            {
+                options.OperationFilter<AddCorrelationHeaderRequired>();
+            }
 
             if (options.DefaultComments)
             {

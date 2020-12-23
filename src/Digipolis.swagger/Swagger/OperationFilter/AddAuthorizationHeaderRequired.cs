@@ -1,7 +1,12 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Digipolis.Auth.Authorization;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -9,29 +14,30 @@ namespace Digipolis.swagger.Swagger.OperationFilter
 {
     public class AddAuthorizationHeaderRequired : IOperationFilter
     {
+        private readonly IHostEnvironment _environment;
+
+        public AddAuthorizationHeaderRequired(IServiceProvider serviceProvider)
+        {
+            _environment = serviceProvider.GetRequiredService<IHostEnvironment>();
+        }
+        
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
-            if (context.ApiDescription.ActionDescriptor.EndpointMetadata.Any(x => x.GetType() == typeof(AuthorizeByConventionAttribute))
-                && !context.ApiDescription.ActionDescriptor.EndpointMetadata.Any(x => x.GetType() == typeof(AllowAnonymousAttribute)))
+            if (context.ApiDescription.ActionDescriptor.FilterDescriptors.Any(x => x.Filter.GetType() == typeof(AuthorizeFilter))
+                && context.ApiDescription.ActionDescriptor.FilterDescriptors.All(x => x.Filter.GetType() != typeof(AllowAnonymousFilter)))
             {
-                if (operation.Security == null)
-                    operation.Security = new List<OpenApiSecurityRequirement>();
-
-                var scheme = new OpenApiSecurityScheme
+          
+                operation.Parameters?.Add(new OpenApiParameter()
                 {
-                    Reference = new OpenApiReference
-                    {
-                        Type = ReferenceType.SecurityScheme,
-                        Id = "Bearer"
-                    },
-                    Scheme = "bearer",
                     Name = "Authorization",
+                    Description = "JWT token",
+                    Required = !_environment.IsDevelopment(),
                     In = ParameterLocation.Header,
-
-                };
-                operation.Security.Add(new OpenApiSecurityRequirement
-                {
-                    [scheme] = new List<string>()
+                    Schema = new OpenApiSchema
+                    {
+                        Type = "string",
+                        Default = new OpenApiString("Bearer ")
+                    }
                 });
             }
         }

@@ -33,7 +33,7 @@ namespace Digipolis.swagger.test
             var swaggerGenOptions = new SwaggerGenOptions();
             configOptions.Configure(swaggerGenOptions);
 
-            Assert.Equal(8, swaggerGenOptions.OperationFilterDescriptors.Count);
+            Assert.Equal(9, swaggerGenOptions.OperationFilterDescriptors.Count);
             
             Assert.Contains(swaggerGenOptions.OperationFilterDescriptors,
                 f => f.Type == typeof(AddAuthorizationHeaderRequired));
@@ -49,6 +49,8 @@ namespace Digipolis.swagger.test
                 f => f.Type == typeof(RemoveVersionFromRoute));
             Assert.Contains(swaggerGenOptions.OperationFilterDescriptors,
                 f => f.Type == typeof(AddPagingParameterDescriptions));
+            Assert.Contains(swaggerGenOptions.OperationFilterDescriptors,
+                f => f.Type == typeof(AddCorrelationHeaderRequired));
             Assert.Contains(swaggerGenOptions.OperationFilterDescriptors,
                 f => f.Type == typeof(SetDescription));
             
@@ -85,7 +87,7 @@ namespace Digipolis.swagger.test
             var swaggerGenOptions = new SwaggerGenOptions();
             configOptions.Configure(swaggerGenOptions);
 
-            Assert.Equal(8, swaggerGenOptions.OperationFilterDescriptors.Count);
+            Assert.Equal(9, swaggerGenOptions.OperationFilterDescriptors.Count);
             
             Assert.Contains(swaggerGenOptions.OperationFilterDescriptors,
                 f => f.Type == typeof(CamelCaseBodyParameterFilter));
@@ -95,6 +97,9 @@ namespace Digipolis.swagger.test
             
             Assert.Contains(swaggerGenOptions.OperationFilterDescriptors,
                 f => f.Type == typeof(SetDescription));
+            
+            Assert.Contains(swaggerGenOptions.OperationFilterDescriptors,
+                f => f.Type == typeof(AddCorrelationHeaderRequired));
         }
         
         [Fact]
@@ -114,6 +119,7 @@ namespace Digipolis.swagger.test
                 options.DefaultSetDescription = false;
                 options.DefaultSecurityDefinition = false;
                 options.DefaultSchemaIdSelector = false;
+                options.DefaultAddCorrelationHeaderRequired = false;
             });
 
             
