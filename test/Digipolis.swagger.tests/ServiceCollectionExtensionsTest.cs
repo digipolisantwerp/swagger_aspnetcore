@@ -1,14 +1,14 @@
 using System;
 using Digipolis.Auth.Options;
-using Digipolis.swagger.Startup;
-using Digipolis.swagger.Swagger.OperationFilter;
+using Digipolis.Swagger.Startup;
+using Digipolis.Swagger.Swagger.OperationFilter;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Xunit;
 using System.Linq;
 
-namespace Digipolis.swagger.test
+namespace Digipolis.Swagger.test
 {
     public class ServiceCollectionExtensionsTest
     {

@@ -5,7 +5,7 @@ using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Digipolis.swagger.Swagger.OperationFilter
+namespace Digipolis.Swagger.Swagger.OperationFilter
 {
     public class AddPagingParameterDescriptions : IOperationFilter
     {

@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Digipolis.swagger.Options;
-using Digipolis.swagger.Swagger;
-using Digipolis.swagger.Swagger.OperationFilter;
+using Digipolis.Swagger.Options;
+using Digipolis.Swagger.Swagger;
+using Digipolis.Swagger.Swagger.OperationFilter;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Digipolis.swagger.Startup
+namespace Digipolis.Swagger.Startup
 {
     public static class ServiceCollectionExtensions
     {

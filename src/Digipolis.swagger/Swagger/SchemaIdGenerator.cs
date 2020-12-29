@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using Digipolis.swagger.Swagger.Attribute;
+using Digipolis.Swagger.Swagger.Attribute;
 
-namespace Digipolis.swagger.Swagger
+namespace Digipolis.Swagger.Swagger
 {
     public static class SchemaIdGenerator
     {

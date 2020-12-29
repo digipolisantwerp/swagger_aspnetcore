@@ -1,6 +1,6 @@
 ﻿using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Digipolis.swagger.Options
+namespace Digipolis.Swagger.Options
 {
     public class SwaggerOptions : SwaggerGenOptions
     {
