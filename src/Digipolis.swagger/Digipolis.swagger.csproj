@@ -14,4 +14,11 @@
       <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="5.6.3" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="CustomJs\AddPublishJsonButton.js" />
+      <EmbeddedResource Include="CustomJs\AddPublishJsonButton.js">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </EmbeddedResource>
+    </ItemGroup>
+
 </Project>
