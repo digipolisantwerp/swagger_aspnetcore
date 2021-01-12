@@ -96,13 +96,7 @@ namespace Digipolis.Swagger.Startup
             {
                 options.OperationFilter<AddDefaultValues>();
             }
-            
-            if (options.DefaultRemoveVersionFromRoute
-                && options.OperationFilterDescriptors.All(o => o.Type != typeof(RemoveVersionFromRoute)))
-            {
-                options.OperationFilter<RemoveVersionFromRoute>();
-            }
-            
+
             if (options.DefaultAddPagingParameterDescriptions
                 && options.OperationFilterDescriptors.All(o => o.Type != typeof(AddPagingParameterDescriptions)))
             {

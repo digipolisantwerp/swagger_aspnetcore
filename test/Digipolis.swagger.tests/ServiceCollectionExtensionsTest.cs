@@ -46,8 +46,6 @@ namespace Digipolis.Swagger.test
             Assert.Contains(swaggerGenOptions.OperationFilterDescriptors,
                 f => f.Type == typeof(AddDefaultValues));
             Assert.Contains(swaggerGenOptions.OperationFilterDescriptors,
-                f => f.Type == typeof(RemoveVersionFromRoute));
-            Assert.Contains(swaggerGenOptions.OperationFilterDescriptors,
                 f => f.Type == typeof(AddPagingParameterDescriptions));
             Assert.Contains(swaggerGenOptions.OperationFilterDescriptors,
                 f => f.Type == typeof(AddCorrelationHeaderRequired));
@@ -71,7 +69,6 @@ namespace Digipolis.Swagger.test
                 options.OperationFilter<RemoveSyncRootParameter>();
                 options.OperationFilter<LowerCaseQueryParameterFilter>();
                 options.OperationFilter<AddDefaultValues>();
-                options.OperationFilter<RemoveVersionFromRoute>();
             });
 
             
@@ -114,7 +111,6 @@ namespace Digipolis.Swagger.test
                 options.DefaultLowerCaseQueryParameterFilter = false;
                 options.DefaultCamelCaseBodyParameterFilter = false;
                 options.DefaultAddDefaultValues = false;
-                options.DefaultRemoveVersionFromRoute = false;
                 options.DefaultAddPagingParameterDescriptions = false;
                 options.DefaultSetDescription = false;
                 options.DefaultSecurityDefinition = false;

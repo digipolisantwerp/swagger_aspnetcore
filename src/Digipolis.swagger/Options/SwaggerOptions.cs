@@ -61,13 +61,6 @@ namespace Digipolis.Swagger.Options
         public bool DefaultAddDefaultValues { get; set; } = true;
         
         /// <summary>
-        /// When set to true the RemoveVersionFromRoute class will be added to the
-        /// OperationFilterDescriptors list by default if not yet included
-        /// Default value: true
-        /// </summary>
-        public bool DefaultRemoveVersionFromRoute { get; set; } = true;
-        
-        /// <summary>
         /// When set to true the AddPagingParameterDescriptions class will be added to the
         /// OperationFilterDescriptors list by default if not yet included
         /// Default value: true
