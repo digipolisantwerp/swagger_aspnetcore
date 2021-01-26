@@ -1,6 +1,6 @@
 ﻿using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Digipolis.swagger.Options
+namespace Digipolis.Swagger.Options
 {
     public class SwaggerOptions : SwaggerGenOptions
     {
@@ -20,7 +20,7 @@ namespace Digipolis.swagger.Options
 
         /// <summary>
         /// When set to true the SchemaGeneratorOptions.SchemaIdSelector will be set to the SchemaIdSelector
-        /// when this option is left null
+        /// when this option is not set with a different schemaId Selector function
         /// Default value: true
         /// </summary>
         public bool DefaultSchemaIdSelector { get; set; } = true;
@@ -61,13 +61,6 @@ namespace Digipolis.swagger.Options
         public bool DefaultAddDefaultValues { get; set; } = true;
         
         /// <summary>
-        /// When set to true the RemoveVersionFromRoute class will be added to the
-        /// OperationFilterDescriptors list by default if not yet included
-        /// Default value: true
-        /// </summary>
-        public bool DefaultRemoveVersionFromRoute { get; set; } = true;
-        
-        /// <summary>
         /// When set to true the AddPagingParameterDescriptions class will be added to the
         /// OperationFilterDescriptors list by default if not yet included
         /// Default value: true
@@ -80,6 +73,13 @@ namespace Digipolis.swagger.Options
         /// Default value: true
         /// </summary>
         public bool DefaultSetDescription { get; set; } = true;
+        
+        /// <summary>
+        /// When set to true the AddCorrelationHeaderRequired class will be added to the
+        /// OperationFilterDescriptors list by default if not yet included
+        /// Default value: true
+        /// </summary>
+        public bool DefaultAddCorrelationHeaderRequired { get; set; } = true;
 
     }
 }

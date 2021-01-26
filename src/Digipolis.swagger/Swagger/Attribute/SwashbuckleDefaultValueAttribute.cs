@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Digipolis.swagger.Swagger.Attribute
+namespace Digipolis.Swagger.Swagger.Attribute
 {
     [AttributeUsage(AttributeTargets.Method, Inherited = false, AllowMultiple = true)]
     public class SwashbuckleDefaultValueAttribute : System.Attribute

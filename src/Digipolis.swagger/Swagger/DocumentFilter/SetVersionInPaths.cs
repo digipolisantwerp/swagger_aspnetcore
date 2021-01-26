@@ -4,7 +4,7 @@ using System.Linq;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Digipolis.swagger.Swagger.DocumentFilter
+namespace Digipolis.Swagger.Swagger.DocumentFilter
 {
     public class SetVersionInPaths : IDocumentFilter
     {

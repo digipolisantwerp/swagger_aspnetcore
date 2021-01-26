@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Digipolis.swagger.Options;
-using Digipolis.swagger.Swagger;
-using Digipolis.swagger.Swagger.OperationFilter;
+using Digipolis.Swagger.Options;
+using Digipolis.Swagger.Swagger;
+using Digipolis.Swagger.Swagger.OperationFilter;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Digipolis.swagger.Startup
+namespace Digipolis.Swagger.Startup
 {
     public static class ServiceCollectionExtensions
     {
@@ -96,17 +96,17 @@ namespace Digipolis.swagger.Startup
             {
                 options.OperationFilter<AddDefaultValues>();
             }
-            
-            if (options.DefaultRemoveVersionFromRoute
-                && options.OperationFilterDescriptors.All(o => o.Type != typeof(RemoveVersionFromRoute)))
-            {
-                options.OperationFilter<RemoveVersionFromRoute>();
-            }
-            
+
             if (options.DefaultAddPagingParameterDescriptions
                 && options.OperationFilterDescriptors.All(o => o.Type != typeof(AddPagingParameterDescriptions)))
             {
                 options.OperationFilter<AddPagingParameterDescriptions>();
+            }
+            
+            if (options.DefaultAddCorrelationHeaderRequired
+                && options.OperationFilterDescriptors.All(o => o.Type != typeof(AddCorrelationHeaderRequired)))
+            {
+                options.OperationFilter<AddCorrelationHeaderRequired>();
             }
 
             if (options.DefaultComments)

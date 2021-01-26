@@ -1,14 +1,14 @@
 using System;
 using Digipolis.Auth.Options;
-using Digipolis.swagger.Startup;
-using Digipolis.swagger.Swagger.OperationFilter;
+using Digipolis.Swagger.Startup;
+using Digipolis.Swagger.Swagger.OperationFilter;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Xunit;
 using System.Linq;
 
-namespace Digipolis.swagger.test
+namespace Digipolis.Swagger.test
 {
     public class ServiceCollectionExtensionsTest
     {
@@ -33,7 +33,7 @@ namespace Digipolis.swagger.test
             var swaggerGenOptions = new SwaggerGenOptions();
             configOptions.Configure(swaggerGenOptions);
 
-            Assert.Equal(8, swaggerGenOptions.OperationFilterDescriptors.Count);
+            Assert.Equal(9, swaggerGenOptions.OperationFilterDescriptors.Count);
             
             Assert.Contains(swaggerGenOptions.OperationFilterDescriptors,
                 f => f.Type == typeof(AddAuthorizationHeaderRequired));
@@ -46,9 +46,9 @@ namespace Digipolis.swagger.test
             Assert.Contains(swaggerGenOptions.OperationFilterDescriptors,
                 f => f.Type == typeof(AddDefaultValues));
             Assert.Contains(swaggerGenOptions.OperationFilterDescriptors,
-                f => f.Type == typeof(RemoveVersionFromRoute));
-            Assert.Contains(swaggerGenOptions.OperationFilterDescriptors,
                 f => f.Type == typeof(AddPagingParameterDescriptions));
+            Assert.Contains(swaggerGenOptions.OperationFilterDescriptors,
+                f => f.Type == typeof(AddCorrelationHeaderRequired));
             Assert.Contains(swaggerGenOptions.OperationFilterDescriptors,
                 f => f.Type == typeof(SetDescription));
             
@@ -69,7 +69,6 @@ namespace Digipolis.swagger.test
                 options.OperationFilter<RemoveSyncRootParameter>();
                 options.OperationFilter<LowerCaseQueryParameterFilter>();
                 options.OperationFilter<AddDefaultValues>();
-                options.OperationFilter<RemoveVersionFromRoute>();
             });
 
             
@@ -85,7 +84,7 @@ namespace Digipolis.swagger.test
             var swaggerGenOptions = new SwaggerGenOptions();
             configOptions.Configure(swaggerGenOptions);
 
-            Assert.Equal(8, swaggerGenOptions.OperationFilterDescriptors.Count);
+            Assert.Equal(9, swaggerGenOptions.OperationFilterDescriptors.Count);
             
             Assert.Contains(swaggerGenOptions.OperationFilterDescriptors,
                 f => f.Type == typeof(CamelCaseBodyParameterFilter));
@@ -95,6 +94,9 @@ namespace Digipolis.swagger.test
             
             Assert.Contains(swaggerGenOptions.OperationFilterDescriptors,
                 f => f.Type == typeof(SetDescription));
+            
+            Assert.Contains(swaggerGenOptions.OperationFilterDescriptors,
+                f => f.Type == typeof(AddCorrelationHeaderRequired));
         }
         
         [Fact]
@@ -109,11 +111,11 @@ namespace Digipolis.swagger.test
                 options.DefaultLowerCaseQueryParameterFilter = false;
                 options.DefaultCamelCaseBodyParameterFilter = false;
                 options.DefaultAddDefaultValues = false;
-                options.DefaultRemoveVersionFromRoute = false;
                 options.DefaultAddPagingParameterDescriptions = false;
                 options.DefaultSetDescription = false;
                 options.DefaultSecurityDefinition = false;
                 options.DefaultSchemaIdSelector = false;
+                options.DefaultAddCorrelationHeaderRequired = false;
             });
 
             

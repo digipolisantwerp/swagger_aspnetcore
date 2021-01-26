@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Digipolis.swagger.Swagger.Attribute;
+using Digipolis.Swagger.Swagger.Attribute;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Digipolis.swagger.Swagger.OperationFilter
+namespace Digipolis.Swagger.Swagger.OperationFilter
 {
     public class AddDefaultValues : IOperationFilter
     {

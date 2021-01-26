@@ -64,7 +64,19 @@ services.AddDigipolisSwagger(options =>
 This method adds basic operator filters that abide the rules set by the [Digipolis API guidelines](https://acpaas-api.digipolis.be#/).
 Make sure to fill in the SwaggerDoc option as this one is not automatically set.
 
+In the **Configure** method of the **Startup** class you should also add the UseDigipolisSwagger middleware. Like this for example:
+```csharp  
+app.UseDigipolisSwagger();
+```
+
+You can also include a collection of versions if you need to include multiple version. To do this change the UseDigipolisSwagger to:
+
+```csharp  
+app.UseDigipolisSwagger(versionProvider.ApiVersionDescriptions.Select(a => a.GroupName));
+```
+
 ## Custom options
+
 This library extends the original SwaggerGenOptions with additional default properties. If you wish to prevent certain default options to be added simply set these options to false, or if you do want them to be added simple set them to true (if they are not yet true by default).
 
 ```csharp  
@@ -80,15 +92,15 @@ Here is a complete overview of the additional options to be set:
 | ------------------------------------- | ------------------------------------------------------------ | ------- |
 | DefaultComments                       | When set to true the xml documents will be added.            | true    |
 | DefaultSecurityDefinition             | When set to true and when the SwaggerGeneratorOptions.SecuritySchemes have no elements with key 'Bearer' then the default JWT authoriztion header security scheme is added. | true    |
-| DefaultSchemaIdSelector               | When set to true the SchemaGeneratorOptions.SchemaIdSelector will be set to the SchemaIdSelector when this option is left null. | true    |
+| DefaultSchemaIdSelector               | When set to true the SchemaGeneratorOptions.SchemaIdSelector will be set to the SchemaIdSelector when this option is not set with a different schemaId Selector function | true    |
 | DefaultAddAuthorizationHeaderRequired | When set to true the AddAuthorizationHeaderRequired class will be added to the OperationFilterDescriptors list by default if not yet included. | true    |
 | DefaultRemoveSyncRootParameter        | When set to true the RemoveSyncRootParameter class will be added to the OperationFilterDescriptors list by default if not yet included. | true    |
 | DefaultLowerCaseQueryParameterFilter  | When set to true the LowerCaseQueryParameterFilter class will be added to the OperationFilterDescriptors list by default if not yet included. | true    |
 | DefaultCamelCaseBodyParameterFilter   | When set to true the CamelCaseBodyParameterFilter class will be added to the OperationFilterDescriptors list by default if not yet included. | true    |
 | DefaultAddDefaultValues               | When set to true the AddDefaultValues class will be added to the OperationFilterDescriptors list by default if not yet included. | true    |
-| DefaultRemoveVersionFromRoute         | When set to true the RemoveVersionFromRoute class will be added to the OperationFilterDescriptors list by default if not yet included. | true    |
 | DefaultAddPagingParameterDescriptions | When set to true the AddPagingParameterDescriptions class will be added to the OperationFilterDescriptors list by default if not yet included. | true    |
 | DefaultSetDescription                 | When set to true the SetDescription class will be added to the OperationFilterDescriptors list by default if not yet included. | true    |
+| DefaultAddCorrelationHeaderRequired   | When set to true the AddCorrelationHeaderRequired class will be added to the OperationFilterDescriptors list by default if not yet included | true    |
 
 
 ## Contributing
@@ -101,4 +113,4 @@ Pull requests are always welcome, however keep the following things in mind:
 
 ## Support
 
-Paul Hieltjes (<paul.hieltjes@digipolis.be>)
+Rob Liekens (<rob.liekens@digipolis.be>)

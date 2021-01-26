@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Digipolis.swagger.Swagger.OperationFilter
+namespace Digipolis.Swagger.Swagger.OperationFilter
 {
     public class AddAuthorizationForHeaderOptional : IOperationFilter
     {
