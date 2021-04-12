@@ -33,7 +33,7 @@ namespace Digipolis.Swagger.test
             var swaggerGenOptions = new SwaggerGenOptions();
             configOptions.Configure(swaggerGenOptions);
 
-            Assert.Equal(9, swaggerGenOptions.OperationFilterDescriptors.Count);
+            Assert.Equal(8, swaggerGenOptions.OperationFilterDescriptors.Count);
             
             Assert.Contains(swaggerGenOptions.OperationFilterDescriptors,
                 f => f.Type == typeof(AddAuthorizationHeaderRequired));
@@ -84,7 +84,7 @@ namespace Digipolis.Swagger.test
             var swaggerGenOptions = new SwaggerGenOptions();
             configOptions.Configure(swaggerGenOptions);
 
-            Assert.Equal(9, swaggerGenOptions.OperationFilterDescriptors.Count);
+            Assert.Equal(8, swaggerGenOptions.OperationFilterDescriptors.Count);
             
             Assert.Contains(swaggerGenOptions.OperationFilterDescriptors,
                 f => f.Type == typeof(CamelCaseBodyParameterFilter));
