@@ -1,5 +1,10 @@
 # Digipolis Swagger library
 
+## 1.0.2
+
+- Added code to create the AddPublishJsonButton.js file on startup from embedded resource
+- Updated unit tests
+
 ## 1.0.1
 
 - Update code based on PR feedback.
