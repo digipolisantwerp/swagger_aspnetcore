@@ -37,40 +37,42 @@ namespace Digipolis.Swagger.Startup
                 {
                     options.SwaggerEndpoint("/swagger/v1/swagger.json", "V1");
                 }
-                CreateResource(_dir, _fileName);
+
+                var outputDir = Path.Combine(AppContext.BaseDirectory, _dir);
+                CreateResource(outputDir);
                 app.UseFileServer(new FileServerOptions
                 {
-                    FileProvider = new PhysicalFileProvider(
-                        Path.Combine(AppContext.BaseDirectory, _dir)),
+                    FileProvider = new PhysicalFileProvider(outputDir),
                     RequestPath = $"/{_dir}",
                     EnableDirectoryBrowsing = false
                 });
 
-                options.InjectJavascript(Path.Combine(_dir, _fileName));
-                
+                options.InjectJavascript("/CustomJs/AddPublishJsonButton.js");
+
+
             });
 
             return app;
         }
 
-        private static void CreateResource(string dir, string filename)
+        private static void CreateResource(string outputDir)
         {
             // Get the name of the toolbox assembly
             var assembly = Assembly.GetAssembly(typeof(ApplicationBuilderExtensions));
             var asn = assembly.GetName().Name;
             // construct the name of the embedded resource
-            var resource = string.Join('.', asn, dir, filename);
+            var resource = string.Join('.', asn, _dir, _fileName);
             // Read the embedded resource as a stream
             using (var stream = assembly.GetManifestResourceStream(resource))
             {
                 if (stream == null) return; 
                 // Ensure the directory exists
-                if (!Directory.Exists(dir))
+                if (!Directory.Exists(outputDir))
                 {
-                    Directory.CreateDirectory(dir);
+                    Directory.CreateDirectory(outputDir);
                 }
                 // Create/open the file for writing
-                using (var file = File.Create(Path.Combine(dir, filename)))
+                using (var file = File.Create(Path.Combine(outputDir, _fileName)))
                 {
                     // Copy the contents of the embedded resource into the file
                     stream.CopyToAsync(file);
