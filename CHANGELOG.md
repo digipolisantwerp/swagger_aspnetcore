@@ -1,5 +1,11 @@
 # Digipolis Swagger library
 
+## 1.0.5
+
+- Remove version from Paths in swaggerDoc to comply with openapi-validator.
+- Set api version in OpenApiServer Url for OpenApiDocument. Serialize as V2 will set basePath to version on swaggerDoc, removing need for version in Paths.
+- Make download button on swagger ui optional.
+
 ## 1.0.4
 
 - Set swagger definition to Swagger v2 in stead of OpenApi v3, openapi-validator.antwerpen.be only supports up to v2

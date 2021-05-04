@@ -13,13 +13,13 @@ namespace Digipolis.Swagger.Startup
         private static string _fileName = "AddPublishJsonButton.js";
         private static string _dir = "CustomJs";
 
-        public static IApplicationBuilder UseDigipolisSwagger(this IApplicationBuilder app, IEnumerable<string> versions = null)
+        public static IApplicationBuilder UseDigipolisSwagger(this IApplicationBuilder app, IEnumerable<string> versions = null, bool useDownloadButton = true)
         {
             app.UseSwagger(options =>
             {
                 options.PreSerializeFilters.Add((swaggerDoc, httpReq) =>
                 {
-                    swaggerDoc.Servers = new List<OpenApiServer>() { new OpenApiServer() { Url = $"{httpReq.Scheme}://{httpReq.Host.Value}" } };
+                    swaggerDoc.Servers = new List<OpenApiServer> { new OpenApiServer { Url = $"{httpReq.Scheme}://{httpReq.Host.Value}/{swaggerDoc.Info.Version}" } };
                 });
                 options.SerializeAsV2 = true;
             });
@@ -39,6 +39,7 @@ namespace Digipolis.Swagger.Startup
                     options.SwaggerEndpoint("/swagger/v1/swagger.json", "V1");
                 }
 
+                if (!useDownloadButton) return;
                 var outputDir = Path.Combine(AppContext.BaseDirectory, _dir);
                 CreateResource(outputDir);
                 app.UseFileServer(new FileServerOptions
@@ -48,7 +49,7 @@ namespace Digipolis.Swagger.Startup
                     EnableDirectoryBrowsing = false
                 });
 
-                options.InjectJavascript("/CustomJs/AddPublishJsonButton.js");
+                options.InjectJavascript($"/{_dir}/{_fileName}");
 
 
             });
@@ -64,20 +65,18 @@ namespace Digipolis.Swagger.Startup
             // construct the name of the embedded resource
             var resource = string.Join('.', asn, _dir, _fileName);
             // Read the embedded resource as a stream
-            using (var stream = assembly.GetManifestResourceStream(resource))
+            using var stream = assembly.GetManifestResourceStream(resource);
+            if (stream == null) return;
+            // Ensure the directory exists
+            if (!Directory.Exists(outputDir))
             {
-                if (stream == null) return; 
-                // Ensure the directory exists
-                if (!Directory.Exists(outputDir))
-                {
-                    Directory.CreateDirectory(outputDir);
-                }
-                // Create/open the file for writing
-                using (var file = File.Create(Path.Combine(outputDir, _fileName)))
-                {
-                    // Copy the contents of the embedded resource into the file
-                    stream.CopyToAsync(file);
-                }
+                Directory.CreateDirectory(outputDir);
+            }
+            // Create/open the file for writing
+            using (var file = File.Create(Path.Combine(outputDir, _fileName)))
+            {
+                // Copy the contents of the embedded resource into the file
+                stream.CopyToAsync(file);
             }
         }
     }
