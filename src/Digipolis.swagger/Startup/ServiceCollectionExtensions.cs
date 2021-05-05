@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Digipolis.Swagger.Options;
 using Digipolis.Swagger.Swagger;
+using Digipolis.Swagger.Swagger.DocumentFilter;
 using Digipolis.Swagger.Swagger.OperationFilter;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
@@ -23,6 +24,9 @@ namespace Digipolis.Swagger.Startup
             AddDefaultOperationFilters(options);
             AddDefaultSchemaGeneratorOptions(options);
             AddDefaultSecurityDefinition(options);
+            AddDefaultDocumentFilters(options);
+
+            options.DocInclusionPredicate((swaggerDocVersion, apiDescription) => apiDescription.GroupName == swaggerDocVersion);
 
             Action<SwaggerGenOptions> newOptions = genOptions =>
             {
@@ -38,6 +42,14 @@ namespace Digipolis.Swagger.Startup
             services.AddSwaggerGen(newOptions);
 
             return services;
+        }
+
+        private static void AddDefaultDocumentFilters(SwaggerOptions options)
+        {
+            if(options.DocumentFilterDescriptors.All(d => d.Type != typeof(RemoveVersionFromPaths)))
+            {
+                options.DocumentFilter<RemoveVersionFromPaths>();
+            }
         }
 
         private static void AddDefaultSecurityDefinition(SwaggerOptions options)
