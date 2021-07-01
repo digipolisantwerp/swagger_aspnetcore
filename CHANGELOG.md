@@ -1,5 +1,9 @@
 # Digipolis Swagger library
 
+## 1.0.6
+
+- set correct path to include xml-comments
+
 ## 1.0.5
 
 - Remove version from Paths in swaggerDoc to comply with openapi-validator.

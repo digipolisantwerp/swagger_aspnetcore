@@ -124,7 +124,7 @@ namespace Digipolis.Swagger.Startup
             if (options.DefaultComments)
             {
                 var location = Assembly.GetEntryAssembly()?.Location;
-                var xmlComments = Path.Combine(Environment.CurrentDirectory, Path.GetFileNameWithoutExtension(location) + ".xml");
+                var xmlComments = Path.Combine(Path.GetDirectoryName(location), Path.GetFileNameWithoutExtension(location) + ".xml");
 
                 if (File.Exists(xmlComments))
                 {
