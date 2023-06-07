@@ -57,6 +57,7 @@ namespace Digipolis.Swagger.Startup
             return app;
         }
 
+        private static readonly object resourceLock = new object();
         private static void CreateResource(string outputDir)
         {
             // Get the name of the toolbox assembly
@@ -67,16 +68,20 @@ namespace Digipolis.Swagger.Startup
             // Read the embedded resource as a stream
             using var stream = assembly.GetManifestResourceStream(resource);
             if (stream == null) return;
-            // Ensure the directory exists
-            if (!Directory.Exists(outputDir))
+            
+            lock (resourceLock) 
             {
-                Directory.CreateDirectory(outputDir);
-            }
-            // Create/open the file for writing
-            using (var file = File.Create(Path.Combine(outputDir, _fileName)))
-            {
-                // Copy the contents of the embedded resource into the file
-                stream.CopyToAsync(file);
+                // Ensure the directory exists
+                if (!Directory.Exists(outputDir))
+                {
+                    Directory.CreateDirectory(outputDir);
+                }
+                // Create/open the file for writing
+                using (var file = File.Create(Path.Combine(outputDir, _fileName)))
+                {
+                    // Copy the contents of the embedded resource into the file
+                    stream.CopyToAsync(file);
+                }
             }
         }
     }
