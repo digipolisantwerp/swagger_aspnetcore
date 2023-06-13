@@ -28,7 +28,7 @@ To add the library to a project, you add the package to the csproj file :
 
 ```xml
   <ItemGroup>
-    <PackageReference Include="Digipolis.swagger" Version="1.0.6" />
+    <PackageReference Include="Digipolis.swagger" Version="1.0.7" />
   </ItemGroup>
 ```
 

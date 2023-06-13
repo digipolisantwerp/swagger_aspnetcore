@@ -1,5 +1,9 @@
 # Digipolis Swagger library
 
+## 1.0.7
+
+- Added lock when creating the directory and file to assure thread safety
+
 ## 1.0.6
 
 - set correct path to include xml-comments
